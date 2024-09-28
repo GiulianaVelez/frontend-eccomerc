@@ -38,12 +38,46 @@ function LayoutAdmin() {
           </li>
           <li>
             <Link
-              to="/admin/producto/nuevo"
-              className={`px-4 py-2 text-lg font-semibold transition-colors duration-300 rounded-md ${location.pathname === '/admin/producto/nuevo' ? 'text-pink-700 bg-pink-100' : 'text-gray-800 hover:text-pink-600 hover:bg-pink-50'}`}
+              to="/admin/usuario"
+              className={`px-4 py-2 text-lg font-semibold transition-colors duration-300 rounded-md ${location.pathname === '/admin/usuario' ? 'text-pink-700 bg-pink-100' : 'text-gray-800 hover:text-pink-600 hover:bg-pink-50'}`}
             >
-              Crear Producto
+              Usuarios
             </Link>
           </li>
+           
+          <li>
+            <Link
+              to="/admin/categoria"
+              className={`px-4 py-2 text-lg font-semibold transition-colors duration-300 rounded-md ${location.pathname === '/admin/categoria' ? 'text-pink-700 bg-pink-100' : 'text-gray-800 hover:text-pink-600 hover:bg-pink-50'}`}
+            >
+              Categorias
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              to="/admin/rol"
+              className={`px-4 py-2 text-lg font-semibold transition-colors duration-300 rounded-md ${location.pathname === '/admin/rol' ? 'text-pink-700 bg-pink-100' : 'text-gray-800 hover:text-pink-600 hover:bg-pink-50'}`}
+            >
+              Roles
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              to="/admin/imagen"
+              className={`px-4 py-2 text-lg font-semibold transition-colors duration-300 rounded-md ${location.pathname === '/admin/imagen' ? 'text-pink-700 bg-pink-100' : 'text-gray-800 hover:text-pink-600 hover:bg-pink-50'}`}
+            >
+              imagenes
+            </Link>
+          </li>
+
+
+
+
+
+
+          
         </ul>
       </nav>
       <Outlet />

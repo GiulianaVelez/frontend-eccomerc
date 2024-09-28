@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import {  useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-function ProductosIndex() {
+function UsuariosIndex() {
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const elementosPorPagina = 12
 
@@ -16,8 +16,8 @@ function ProductosIndex() {
 
     useEffect(() => {
         setLoading(true);
-        axios.get('/api/producto/').then((respuesta) => {
-          //console.log(respuesta)
+        axios.get('/api/usuario/').then((respuesta) => {
+          //console.log(respuesta);
           setLoading(false);
           if (respuesta.status === 200) {
             setData(respuesta.data.data);
@@ -30,39 +30,36 @@ function ProductosIndex() {
     }, []);
     
     const handleEdit = (id) => {
-        navigate(`/admin/producto/${id}`);
+        navigate(`/admin/usuario/${id}`);
     };
 
-    const handleInsImg = (id) => {
-      navigate(`/admin/imagen/producto/${id}`);
-    };
 
-    const eliminarProducto = (id) => {
-        axios.delete(`/api/producto/${id}`)
+    const eliminarUsuario = (id) => {
+        axios.delete(`/api/usuario/${id}`)
           .then((respuesta) => {
             if (respuesta.status === 200) {
-              console.log('producto eliminado con éxito');
+              console.log('usuario eliminado con éxito');
               // Actualiza la lista de productos
-              axios.get('/api/producto/')
+              axios.get('/api/usuario/')
                 .then((respuesta) => {
                   setData(respuesta.data.data);
                 })
                 .catch((error) => {
-                  console.log('Error al actualizar la lista de productos', error);
+                  console.log('Error al actualizar la lista de usuario', error);
                 });
             } else {
-              console.log('Error al eliminar el producto', respuesta.status);
+              console.log('Error al eliminar el usuario', respuesta.status);
             }
           })
           .catch((error) => {
-            console.log('Error al eliminar el producto', error);
+            console.log('Error al eliminar el usuario', error);
           });
       };
 
       const handleDelete = (id) => {
-          console.log(`Eliminar producto con id ${id}`);
-          if (window.confirm(`¿Está seguro de eliminar el producto con id ${id}?`)) {
-            eliminarProducto(id);
+          console.log(`Eliminar usuario con id ${id}`);
+          if (window.confirm(`¿Está seguro de eliminar el usuario con id ${id}?`)) {
+            eliminarUsuario(id);
            }
       };
        
@@ -81,9 +78,9 @@ function ProductosIndex() {
       };
 
       return (
-        <>
+        <div>
           <div className='p-6 text-2xl font-bold text-center text-white bg-pink-600'>
-            Gestión de productos
+            Gestión de usuarios
           </div>
           {loading ? 'Cargando...' : ''}
           <div className='flex justify-between items-center p-4'>
@@ -96,7 +93,7 @@ function ProductosIndex() {
                 value={filtro}
                 onChange={(e) => setFiltro(e.target.value)}
               /></div>
-
+              
           </div>
           <div className='m-5'>
             <table className='w-full border border-collapse border-gray-300'>
@@ -104,62 +101,40 @@ function ProductosIndex() {
                 <tr>
                     <th className='px-4 py-2 border-2 border-gray-400' >ID</th>
                     <th className='px-4 py-2 border-2 border-gray-400'>nombre</th>
-                    <th className='px-4 py-2 border-2 border-gray-400'>precio</th>
-                    <th className='px-4 py-2 border-2 border-gray-400'>stock</th>
-                    <th className='px-4 py-2 border-2 border-gray-400'>descripcion corta</th>
-                    <th className='px-4 py-2 border-2 border-gray-400'>descripcion larga</th>
-                    <th className='px-4 py-2 border-2 border-gray-400'>categoria</th>
-                    <th className='px-4 py-2 border-2 border-gray-400'>imagen</th>
+                    <th className='px-4 py-2 border-2 border-gray-400'>apellido</th>
+                    <th className='px-4 py-2 border-2 border-gray-400'>email</th>
+                    <th className='px-4 py-2 border-2 border-gray-400'>telefono</th>
+                    <th className='px-4 py-2 border-2 border-gray-400'>rol</th>
                     <th className='px-4 py-2 border-2 border-gray-400'>Acciones</th>
                      
                 </tr>
               </thead>
               <tbody>
-                {filtrarElementosSegunPagina().filter((Producto) =>
-                  Producto.nombre.toLowerCase().includes(filtro.toLowerCase())
-                ).map((Producto) => (
-
-                  
-                  <tr key={Producto.id} className='border border-gray-400'>
-                      <td className='px-4 py-2 border border-gray-300'>{Producto.id}</td>
-                      <td className='px-4 py-2 border border-gray-300'>{Producto.nombre}</td>
-                      <td className='px-4 py-2 border border-gray-300'>{Producto.precio}</td>
-                      <td className='px-4 py-2 border border-gray-300'>{Producto.stock}</td>
-                      <td className='px-4 py-2 border border-gray-300'>{Producto.descripcion_corta}</td>
-                      <td className='px-4 py-2 border border-gray-300'>{Producto.descripcion_larga}</td>
-                      <td className='px-4 py-2 border border-gray-300'>{Producto.Categorium?.descripcion}</td>
-                      <td className='px-4 py-2 border border-gray-300'>
-                        <img
-                          src={Producto.imagen}
-                         alt={Producto.nombre || "Imagen del producto"}
-                         className="w-16 h-16 object-cover mx-auto"
-                        />
-                      </td>
-                      
+                {filtrarElementosSegunPagina().filter((usuario) =>
+                  usuario.nombre.toLowerCase().includes(filtro.toLowerCase()) || 
+                  usuario.email.toLowerCase().includes(filtro.toLowerCase())
+                ).map((usuario) => (
+                  <tr key={usuario.id} className='border border-gray-400'>
+                      <td className='px-4 py-2 border border-gray-300'>{usuario.id}</td>
+                      <td className='px-4 py-2 border border-gray-300'>{usuario.nombre}</td>
+                      <td className='px-4 py-2 border border-gray-300'>{usuario.apellido}</td>
+                      <td className='px-4 py-2 border border-gray-300'>{usuario.email}</td>
+                      <td className='px-4 py-2 border border-gray-300'>{usuario.telefono}</td>
+                      <td className='px-4 py-2 border border-gray-300'>{usuario.rol?.descripcion}</td> 
                       <td className='px-4 py-2 text-center border border-gray-300'>
                       <button
-                        className="px-1 py-1 bg-green-600 rounded hover:bg-green-700 text-white flex items-center justify-center"
-                        onClick={() => handleInsImg(Producto.id)}
-                      >
-                        Agregar Imagen
-                        
-                      </button>  
-
-
-
-                      <button
                         className='px-4 py-2 mx-2 font-bold text-white bg-blue-500 rounded-lg shadow hover:bg-blue-600'
-                        onClick={() => handleEdit(Producto.id)}
+                        onClick={() => handleEdit(usuario.id)}
                       >
                         Editar
                       </button>
                       <button
                         className='px-4 py-2 mx-2 font-bold text-white bg-red-500 rounded-lg shadow hover:bg-red-600'
-                        onClick={() => handleDelete(Producto.id)}
+                        onClick={() => handleDelete(usuario.id)}
                       >
                         Eliminar
                       </button>
-                    </td>
+                     </td>
                   </tr>
                 ))}
               </tbody>
@@ -168,12 +143,12 @@ function ProductosIndex() {
           </div>
           <div>
             <div className='flex justify-center mt-5'>
-              {filtrarElementosSegunPagina().filter((Producto) =>
-                Producto.nombre.toLowerCase().includes(filtro.toLowerCase())
+              {filtrarElementosSegunPagina().filter((usuario) =>
+                usuario.nombre.toLowerCase().includes(filtro.toLowerCase())
               ).length === 0 ? (
                 <tr>
                   <td colSpan={5} className='px-4 py-2 text-center border border-gray-300'>
-                    No se encontraron productos que coincidan con su búsqueda.
+                    No se encontraron usuarios que coincidan con su búsqueda.
                   </td>
                 </tr>
               ) :
@@ -192,11 +167,11 @@ function ProductosIndex() {
               }
             </div>
           </div>
-        </>
+        </div>
     );
 }
     
-export default ProductosIndex
+export default UsuariosIndex
     
 
 
@@ -211,9 +186,3 @@ export default ProductosIndex
 
 
 
-
-     
-
-    
-
-   

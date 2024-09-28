@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-const FormularioProducto= () =>{
+const FormularioUsuario= () =>{
 
     const navigate = useNavigate();
 
@@ -12,28 +12,27 @@ const FormularioProducto= () =>{
 
     const [error, setError] = useState(null);
 
-    const [producto, setProducto] = useState({
-
-        id: '',
-        precio: '',
-        stock: '',
-        descripcion_corta:'',
-        descripcion_larga:'',
-        CategoriaId:"",
-        imagen:"",
+    const [usuario, setUsuario] = useState({
+        
+        nombre: '',
+        apellido: '',
+        email: '',
+        telefono: '',
+        contraseña: '',
+        rolId: '',
 
     });
-    
-    const [categoria, setCategoria] = useState([]);
-    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(0);
-    const [imagenes, setImagenes] = useState([]);
 
 
-    const obtenerCategorias = async () => {
+    const [roles, setRoles] = useState([]);
+    const [rolSeleccionado, setRolSeleccionado] = useState(0); 
+
+
+    const obtenerRoles = async () => {
       try {
         setLoading(true);
-        const respuesta = await axios.get("api/categoria/");
-        setCategoria(respuesta.data.data);
+        const respuesta = await axios.get("api/rol/");
+        setRoles(respuesta.data.data);
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -43,67 +42,64 @@ const FormularioProducto= () =>{
 
 
 
+
+
+
     useEffect(() => {
-
-
-        obtenerCategorias();
-
-
+        obtenerRoles();
 
         if (id !== 'nuevo') {
-          const fetchProducto = async () => {
+          const fetchUsuario = async () => {
             try {
               setLoading(true);
-              const respuesta = await axios.get('api/producto/' + id);
-              setProducto(respuesta.data.data);
-              setCategoriaSeleccionada(respuesta.data.data.CategoriaId);
+              const respuesta = await axios.get('api/usuario/' + id);
+              setUsuario(respuesta.data.data);
+              setRolSeleccionado(respuesta.data.data)
               setLoading(false);
             } catch (error) {
               setError(error.message);
               setLoading(false);
             }
           };
-          fetchProducto();
+          fetchUsuario();
         } else {
-          setProducto({
-            id: '',
-            precio: '',
-            stock: '',
-            descripcion_corta:'',
-            descripcion_larga:'',
-            CategoriaId:"",
-            imagen:"",
+          setUsuario({
+            nombre: '',
+            apellido: '',
+            email: '',
+            telefono: '',
+            contraseña: '',
+            rolId: '',
 
           });
         }
     }, [id]);
 
     const handleChange = (event) => {
-          const { name, value } = event.target;
-          setProducto({ ...producto, [name]: value });
-        
+        const { name, value } = event.target;
+        setUsuario({ ...usuario, [name]: value });
     };
 
-      const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleSubmit = async (event) => {
+     event.preventDefault();
+
+       usuario.rolId = rolSeleccionado ;
        
-        producto.CategoriaId = categoriaSeleccionada;
-
-
         try {
           if (id === 'nuevo') {
-            const respuesta = await axios.post('/api/producto/', producto);
+            const respuesta = await axios.post('/api/usuario/', usuario);
             console.log(respuesta.data);
-            navigate('/admin/producto');
+            navigate('/admin/usuario');
           } else {
-            const respuesta = await axios.put('/api/producto/' + id, producto);
+            const respuesta = await axios.put('/api/usuario/' + id, usuario);
             console.log(respuesta.data);
-            navigate('/admin/producto');
+            navigate('/admin/usuario');
           }
         } catch (error) {
           setError(error.message);
         }
-      };
+    };
+   
 
     const handleInput = (event) => {
       const value = event.target.value;
@@ -113,10 +109,18 @@ const FormularioProducto= () =>{
 
 
 
+
+
+
+
+
+
+
+
     return (
         <div>
           <div className= 'p-6 text-2xl font-bold text-center text-white bg-pink-600'>
-          { producto.id ?  "Editar producto" : "Crear nuevo producto"} 
+          { usuario.id ?  "Editar usuario" : "Crear nuevo usuario"} 
           </div>
           {loading ? (
             <p className='text-center text-pink-500 mt-4'>Cargando...</p>
@@ -134,105 +138,82 @@ const FormularioProducto= () =>{
                     id="nombre"
                     type="text"
                     name="nombre"
-                    value={producto.nombre}
+                    value={usuario.nombre}
+                    onChange={handleChange}
+                     
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm font-semibold text-gray-700" htmlFor="apellido">
+                    apellido:
+                  </label>
+                  <input
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    id="apellido"
+                    type="text"
+                    name="apellido"
+                    value={usuario.apellido}
                     onChange={handleChange}
                     onInput={handleInput} 
                   />
                 </div>
-                <div className="mb-4">
-                  <label className="block mb-2 text-sm font-semibold text-gray-700" htmlFor="precio">
-                    Precio:
-                  </label>
-                  <input
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    id="precio"
-                    type="number"
-                    name="precio"
-                    value={producto.precio}
-                    onChange={handleChange}
-                    min={1}
-                  />
-                </div>
-                <div className=" mb-4">
-                  <label className="block mb-2 text-sm font-semibold text-gray-700" htmlFor="stock">
-                       stock:
+                <div className="flex mb-4">
+                  <label className="block mb-2 text-sm font-semibold text-gray-700" htmlFor="email">
+                       email:
                   </label>
                   <input 
-                    id="stock"
-                    type="number"
-                    name="stock"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    checked={producto.stock}
+                    id="email"
+                    type="email"
+                    name="email"
+                    checked={usuario.email}
                     onChange={handleChange}
-                    min={1}
                   />
                   
                 </div>
                 <div className="mb-4">
-                  <label className="block mb-2 text-sm font-semibold text-gray-700" htmlFor="descripcion_corta">
-                    descripcion corta:
+                  <label className="block mb-2 text-sm font-semibold text-gray-700" htmlFor="telefono">
+                    telefono:
                   </label>
                   <input
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    id="descripcion_corta"
-                    type="text"
-                    name="descripcion_corta"
-                    value={producto.descripcion_corta}
+                    id="telefono"
+                    type="number"
+                    name="telefono"
+                    value={usuario.telefono}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="mb-4">
                   <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="descripcion Larga">
-                    descripcion Larga:
+                    contraseña:
                   </label>
                   <input
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    id="descripcion_larga"
-                    type="text"
-                    name="descripcion_larga"
-                    value={producto.descripcion_larga}
+                    id="contraseña"
+                    type="password"
+                    name="contraseña"
+                    value={usuario.contraseña}
                     onChange={handleChange}
                   />
                 </div>
-
                 <div className="mb-4">
-                  <label className="block mb-2 text-sm font-semibold text-gray-700" htmlFor="imagen">
-                    Imagen (URL):
-                  </label>
-                  <input
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    id="imagen"
-                    type="text"
-                    name="imagen"
-                    value={producto.imagen}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="categoria">
-                    categoria:
+                  <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="rolid">
+                    rol:
                   </label>
                   <select
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    
-                    value = {categoriaSeleccionada}
-                    onChange={(e) => setCategoriaSeleccionada(Number(e.target.value))}
-                    
+                    value={rolSeleccionado}
+                    onChange={(e) => setRolSeleccionado(Number(e.target.value))}
                   >
-                    <option>
-                      Seleccione una categoría
+                  <option >Seleccione un rol</option>
+                    {roles.map((rol) => (
+                    <option key={rol.id} value={rol.id}>
+                      {rol.descripcion} 
                     </option>
-                    {categoria.map((categoria,index) => (
-                      <option key={categoria.id} value={categoria.id}>
-                        {categoria.descripcion}
-                      </option>
-                  ))}
-                  </select>
+                   ))}
+                  </select> 
                   
                 </div>
-                      
-
 
 
                 <div className='flex justify-center'>
@@ -246,7 +227,7 @@ const FormularioProducto= () =>{
                   <button
                     className="px-4 py-2 mx-2 font-bold text-white bg-gray-500 rounded-lg shadow-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
                     type="button"
-                    onClick={() => navigate('/admin/producto')}
+                    onClick={() => navigate('/admin/usuario')}
                   >
                     Cancelar
                   </button>
@@ -259,56 +240,5 @@ const FormularioProducto= () =>{
     );
 };
     
-export default FormularioProducto;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-    
-
-
+export default FormularioUsuario
 
