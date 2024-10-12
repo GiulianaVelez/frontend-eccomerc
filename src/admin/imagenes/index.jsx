@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import axios from 'axios';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function ImagenesIndex() {
   const navigate = useNavigate();
@@ -122,8 +123,9 @@ function ImagenesIndex() {
                   <button
                     className='px-4 py-2 mx-2 font-bold text-white bg-red-500 rounded hover:bg-red-700'
                     onClick={() => handleDelete(imagen.id)}
+                    title='Eliminar'
                   >
-                    Eliminar
+                    <DeleteIcon/>
                   </button>
                 </td>
               </tr>

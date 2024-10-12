@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import {  useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
+import DeleteIcon from '@mui/icons-material/Delete';
+import CreateIcon from '@mui/icons-material/Create';
+
 function CategoriaIndex() {
 
     const navigate = useNavigate()
@@ -113,14 +116,16 @@ function CategoriaIndex() {
                       <button
                         className='px-4 py-2 mx-2 font-bold text-white bg-blue-500 rounded-lg shadow hover:bg-blue-600'
                         onClick={() => handleEdit(Categoria.id)}
+                        title='Editar'
                       >
-                        Editar
+                        <CreateIcon />
                       </button>
                       <button
                         className='px-4 py-2 mx-2 font-bold text-white bg-red-500 rounded-lg shadow hover:bg-red-600'
                         onClick={() => handleDelete(Categoria.id)}
+                        title='Eliminar'
                       >
-                        Eliminar
+                        <DeleteIcon />
                       </button>
                     </td>
                   </tr>

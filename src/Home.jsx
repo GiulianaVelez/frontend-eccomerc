@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react';
 
 import axios from 'axios';
-import Listado from './Listado.jsx';
+import Header from './componentes/Header.jsx';
+import { Pagination } from "flowbite-react";
+import Filtros from './componentes/Filtros.jsx';
+import Listado from './componentes/Listado.jsx';
+import Footer from './componentes/Footers.jsx';
+import WhatsappIcono from './componentes/WhatsappIcono.jsx';
+
 
 import './Home.css'
+import { Banner } from './componentes/Banner.jsx';
+
 
 // 'https://fakestoreapi.com/products'
 
@@ -11,21 +19,21 @@ import './Home.css'
 function Home() {
 
   const [loading, setLoading] = useState(false);
-  const [verDisponibles, setVerdisponibles] = useState(true);
   const [data, setData] = useState([]);
+  const [cantidadItems, setCantidadItems] = useState(0);
+  const [pagina, setPagina] = useState(1);
 
+  
+  const buscarItems = () => {
 
-  useEffect(() => {
-
-    console.log("cambio el estado", verDisponibles);
-
-    axios.get('/api/producto').then((respuesta) => {
-      //console.log("***", respuesta)
+    axios.get('api/producto/lista?pagina=' + pagina + '&cantidad=6').then((respuesta) => {
+      console.log("***", respuesta)
 
       setLoading(false);
       if (respuesta.status === 200) {
         console.log("respuesta correcta", respuesta.data.data)
-        setData(respuesta.data.data)
+        setData(respuesta.data.data.rows)
+        setCantidadItems(respuesta.data.data.count)
       } else {
         console.log("error")
       }
@@ -33,60 +41,65 @@ function Home() {
     }).catch((error) => {
       console.log("error", error)
     });
+
+  }
+
+  useEffect(() => {
+
+   buscarItems();
     
-  },[verDisponibles])
+
+  }, [pagina]);
+
 
   useEffect(() => {
 
     setLoading(true);
     //console.log("inicia busqueda")
-    axios.get('/api/producto').then((respuesta) => {
-      //console.log("***", respuesta)
-
-      setLoading(false);
-      if (respuesta.status === 200) {
-        console.log("respuesta correcta", respuesta.data.data)
-        setData(respuesta.data.data)
-      } else {
-        console.log("error")
-      }
-
-    }).catch((error) => {
-      console.log("error", error)
-    });
+    buscarItems()
 
   }, [])
 
   
- 
+  const onPageChange = (page) => setPagina(page);
+
 
   return (
     <>
-      <div className="flex items-center justify-between bg-gradient-to-r from-pink-100 via-pink-200 to-pink-300 p-10 shadow-md">
-        <div className="flex items-center">
-          <img 
-            src="https://th.bing.com/th/id/OIP.NSMFPFYHBFbN6r7futOCEwHaHa?rs=1&pid=ImgDetMain" 
-            alt="Bella Chic Logo"
-            className="h-20 w-auto rounded-full"
-          />
-          <span className="font-sans text-2xl font-bold text-pink-900 ml-4">Fashion Store </span>
+      <Header />
+      <Banner/>
+      <div className='mx-auto max-w-6xl'>
+        
+        
+       {(loading == true ) ? 
+         <div className="text-center text-pink-700 font-semibold mt-6">Cargando...</div> 
+         : 
+         <div className="mt-6"><Listado items={data} /></div>
+        }
+        <div className='flex justify-center w-full'>
+         
+         
+         <div className="flex my-10 overflow-x-auto sm:justify-center">
+          <Pagination currentPage={pagina} totalPages={cantidadItems / 3} onPageChange={onPageChange} />
+         </div>
+
         </div>
-        <div className="flex items-center space-x-4">
-          <div className="text-lg text-pink-800">Filtros</div>
-          <button 
-            onClick={() => setVerdisponibles(!verDisponibles)} 
-            className="p-2 px-4 text-white bg-pink-500 rounded-full shadow hover:bg-pink-600 transition duration-300"
-          >
-            {verDisponibles ? "Mostrar disponibles" : "Mostrar no disponibles"}
-          </button>
-        </div>
+
+        
+
+
+
+
+
+
+
       </div>
 
-      {(loading) ? 
-        <div className="text-center text-pink-700 font-semibold mt-6">Cargando...</div> 
-        : 
-        <div className="mt-6"><Listado items={data} /></div>
-      }
+      <Footer/>
+      <WhatsappIcono/>
+    
+
+
     </>
   );
 }

@@ -21,7 +21,7 @@ const FormularioImagen= () => {
       try {
         setLoading(true);
         const respuesta = await axios.get('/api/imagen/producto/' + id);
-        
+        console.log(respuesta);
         setImagenes(respuesta.data.data);
         setLoading(false);
       } catch (error) {

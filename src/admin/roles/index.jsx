@@ -28,19 +28,26 @@ function RolIndex() {
         });
     }, []);
     
-   
 
     const eliminarRol = (id) => {
         axios.delete(`/api/rol/${id}`)
-          .then((respuesta) => {
-            if (respuesta.status === 200) {
-              console.log('rol eliminado con éxito');
-            
-            }
-          })
-          .catch((error) => {
-            console.log('Error al eliminar el usuario', error);
-          });
+        .then((respuesta) => {
+          if (respuesta.status === 200) {
+            console.log('Rol eliminado con éxito');
+            axios.get('/api/rol')
+              .then((respuesta) => {
+                setData(respuesta.data.data);
+              })
+              .catch((error) => {
+                console.log('Error al actualizar la lista de roles', error);
+              });
+          } else {
+            console.log('Error al eliminar roles', respuesta.status);
+          }
+        })
+        .catch((error) => {
+          console.log('Error al eliminar los roles', error);
+        });
       };
 
       const handleDelete = (id) => {
