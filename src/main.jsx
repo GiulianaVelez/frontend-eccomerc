@@ -21,6 +21,7 @@ import FormularioRol from './admin/roles/formularioRol.jsx';
 import RolIndex from './admin/roles/index.jsx';
 import ImagenesIndex from './admin/imagenes/index.jsx';
 import FormularioImagen from './admin/imagenes/formularioImagen.jsx';
+import DetalleProducto from './componentes/DetalleProducto.jsx';
 
 
 axios.defaults.baseURL = 'http://localhost:3000';
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
 
 
     ],
+  },
+  {
+    path: "/detalle/:id", 
+    element: <DetalleProducto/>, 
   },
     
 ]);

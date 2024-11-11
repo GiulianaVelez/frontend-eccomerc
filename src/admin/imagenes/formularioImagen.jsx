@@ -54,10 +54,20 @@ const handleSubmit = async (event) => {
       console.log(respuesta.data);
     
       fetchImagenes();    
+      setImagen({       
+        id: '',       
+        ubicacion: '',       
+        nroOrden: '',     
+      }); 
+
+
+
   } catch (error) {
     setError(error.message);
   }
 };
+
+
  
     return (
       <>

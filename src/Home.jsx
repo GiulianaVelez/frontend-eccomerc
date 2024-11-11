@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from './componentes/Header.jsx';
 import { Pagination } from "flowbite-react";
-import Filtros from './componentes/Filtros.jsx';
 import Listado from './componentes/Listado.jsx';
 import Footer from './componentes/Footers.jsx';
 import WhatsappIcono from './componentes/WhatsappIcono.jsx';
@@ -68,7 +67,7 @@ function Home() {
     <>
       <Header />
       <Banner/>
-      <div className='mx-auto max-w-6xl'>
+      <div className='max-w-full '>
         
         
        {(loading == true ) ? 
@@ -80,7 +79,7 @@ function Home() {
          
          
          <div className="flex my-10 overflow-x-auto sm:justify-center">
-          <Pagination currentPage={pagina} totalPages={cantidadItems / 3} onPageChange={onPageChange} />
+          <Pagination currentPage={pagina} totalPages={cantidadItems / 2} onPageChange={onPageChange} />
          </div>
 
         </div>

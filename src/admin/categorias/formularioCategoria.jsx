@@ -16,6 +16,8 @@ const FormularioCategoria= () =>{
 
     
         descripcion:'',
+        descripcion_Header:'',
+        imagen :'',
 
     });
 
@@ -101,6 +103,46 @@ const FormularioCategoria= () =>{
                      
                   />
                 </div>
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm font-semibold text-gray-700" htmlFor="nombre">
+                   descripcion larga :
+                  </label>
+                  <input
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    id="descripcion_Header"
+                    type="text"
+                    name="descripcion_Header"
+                    value={categoria.descripcion_Header}
+                    onChange={handleChange}
+                     
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm font-semibold text-gray-700" htmlFor="imagen">
+                    Imagen (URL):
+                  </label>
+                  <input
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    id="imagen"
+                    type="text"
+                    name="imagen"
+                    value={categoria.imagen}
+                    onChange={handleChange}
+                  />
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
                 
 
                 <div className='flex justify-center'>

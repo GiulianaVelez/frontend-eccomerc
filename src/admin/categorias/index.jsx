@@ -41,7 +41,7 @@ function CategoriaIndex() {
           .then((respuesta) => {
             if (respuesta.status === 200) {
               console.log('categoria eliminada con éxito');
-              // Actualiza la lista de productos
+              
               axios.get('/api/categoria/')
                 .then((respuesta) => {
                   setData(respuesta.data.data);
@@ -102,6 +102,8 @@ function CategoriaIndex() {
               <thead className='bg-gray-200'>
                 <tr>
                     <th className='px-4 py-2 border-2 border-gray-400' >descripcion</th>
+                    <th className='px-4 py-2 border-2 border-gray-400' >descripcion larga</th>
+                    <th className='px-4 py-2 border-2 border-gray-400' >imagen</th>
                     <th className='px-4 py-2 border-2 border-gray-400'>Acciones</th>
                      
                 </tr>
@@ -112,6 +114,16 @@ function CategoriaIndex() {
                 ).map((Categoria) => (
                   <tr key={Categoria.id} className='border border-gray-400'>
                       <td className='px-4 py-2 border border-gray-300'>{Categoria.descripcion}</td>
+                      <td className='px-4 py-2 border border-gray-300'>{Categoria.descripcion_Header}</td>
+                      <td className='px-4 py-2 border border-gray-300'>
+                         <img
+                            src={Categoria.imagen}
+                            alt={Categoria.descripcion || "Imagen del producto"}
+                            className="w-16 h-16 object-cover mx-auto"
+                          />
+                     </td>
+
+                      
                       <td className='px-4 py-2 text-center border border-gray-300'>
                       <button
                         className='px-4 py-2 mx-2 font-bold text-white bg-blue-500 rounded-lg shadow hover:bg-blue-600'
